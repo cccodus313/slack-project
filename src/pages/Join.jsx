@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert, Avatar, Box, Container, Grid, TextField, Typography } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
 import { LoadingButton } from '@mui/lab';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import '../firebase';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -58,7 +57,6 @@ function Join() {
         avatar: user.photoURL,
       });
       dispatch(setUser(user));
-      //TODO store에 user저장
     } catch (e) {
       setError(e.message);
       setLoading(false);
@@ -120,11 +118,7 @@ function Join() {
             회원가입
           </LoadingButton>
           <Grid container justifyContent='center'>
-            <Grid item>
-              <Link to='/join' style={{ textDecoration: 'none', color: 'blue' }}>
-                계정이 없나요? 회원가입으로 이동하세요.
-              </Link>
-            </Grid>
+            <Grid item></Grid>
           </Grid>
         </Box>
       </Box>
