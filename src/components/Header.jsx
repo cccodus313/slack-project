@@ -33,7 +33,7 @@ function Header() {
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           color: '#9A939B',
-          // backgroundColor: theme.mainTheme,
+          backgroundColor: '#4c3c4c',
         }}
       >
         <Toolbar
