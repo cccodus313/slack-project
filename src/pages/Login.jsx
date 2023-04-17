@@ -79,7 +79,7 @@ function Login() {
           <Grid container justifyContent='center'>
             <Grid item>
               <Link to='/join' style={{ textDecoration: 'none', color: 'blue' }}>
-                계정이 없나요? 회원가입으로 이동
+                계정이 없나요? 회원가입으로 이동하세요.
               </Link>
             </Grid>
           </Grid>
