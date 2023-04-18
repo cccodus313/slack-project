@@ -4,7 +4,6 @@ import TagIcon from '@mui/icons-material/Tag';
 import { useSelector } from 'react-redux';
 import '../firebase';
 import { signOut, getAuth } from 'firebase/auth';
-// import ProfileModal from './Modal/ProfileModal';
 function Header() {
   const { user, theme } = useSelector((state) => state);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,7 +72,6 @@ function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-      {/* <ProfileModal open={showProfileModal} handleClose={handleCloseProfileModal} /> */}
     </>
   );
 }
