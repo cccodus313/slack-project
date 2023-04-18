@@ -56,7 +56,7 @@ function ChannelMenu() {
 
   const handleSubmit = useCallback(async () => {
     const db = getDatabase();
-    const key = push(child(ref(db), 'channels')).key;
+    const key = push(child(ref(db), 'chennels')).key;
     const newChannel = {
       id: key,
       name: channelName,
