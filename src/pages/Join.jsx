@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Avatar, Box, Container, Grid, TextField, Typography } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
 import { LoadingButton } from '@mui/lab';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import '../firebase';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import md5 from 'md5';
@@ -24,44 +24,50 @@ function Join() {
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = data.get('name');
-    const email = data.get('email');
-    const password = data.get('password');
-    const confirmPassword = data.get('confirmPassword');
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const name = data.get('name');
+      const email = data.get('email');
+      const password = data.get('password');
+      const confirmPassword = data.get('confirmPassword');
 
-    if (!name || !email || !password || !confirmPassword) {
-      setError('모든 항목을 입력해주세요');
-      return;
-    }
+      if (!name || !email || !password || !confirmPassword) {
+        setError('모든 항목을 입력해주세요');
+        return;
+      }
 
-    if (!IsPasswordValid(password, confirmPassword)) {
-      setError('비밀번호를 확인하세요.');
-      return;
-    }
-    postUserData(name, email, password);
-  };
+      if (!IsPasswordValid(password, confirmPassword)) {
+        setError('비밀번호를 확인하세요.');
+        return;
+      }
+      postUserData = (name, email, password);
+    },
+    [postUserData]
+  );
 
-  const postUserData = async (name, email, password) => {
-    setLoading(true);
-    try {
-      const { user } = await createUserWithEmailAndPassword(getAuth(), email, password);
-      await updateProfile(user, {
-        displayName: name,
-        photoURL: 'https://www.gravatar.com/avatar/${md5(email)}?d=retro',
-      });
-      await set(ref(getDatabase(), 'users' / +user.uid), {
-        name: user.displayName,
-        avatar: user.photoURL,
-      });
-      dispatch(setUser(user));
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-    }
-  };
+  const postUserData = useCallback(
+    async (name, email, password) => {
+      setLoading(true);
+      try {
+        const { user } = await createUserWithEmailAndPassword(getAuth(), email, password);
+        await updateProfile(user, {
+          displayName: name,
+          photoURL: 'https://www.gravatar.com/avatar/${md5(email)}?d=retro',
+        });
+        await set(ref(getDatabase(), 'users' / +user.uid), {
+          name: user.displayName,
+          avatar: user.photoURL,
+        });
+        dispatch(setUser(user));
+      } catch (e) {
+        setError(e.message);
+        setLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (!error) return;
