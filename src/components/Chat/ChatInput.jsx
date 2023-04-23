@@ -8,7 +8,7 @@ import { getDatabase, push, ref, serverTimestamp, set } from 'firebase/database'
 import { useSelector } from 'react-redux';
 import { Picker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
-import ImageModal from '../Modal/ImageModal';
+// import ImageModal from '../Modal/ImageModal';
 function ChatInput() {
   const { channel, user } = useSelector((state) => state);
   const [message, setMessage] = useState('');
@@ -23,6 +23,11 @@ function ChatInput() {
   const handleTogglePicker = useCallback(() => setShowEmoji((show) => !show), []);
 
   const handleChange = useCallback((e) => setMessage(e.target.value), []);
+  const handleOnKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      clickSendMessage();
+    }
+  };
 
   const createMessage = useCallback(
     () => ({
@@ -36,18 +41,21 @@ function ChatInput() {
     }),
     [message, user.currentUser.uid, user.currentUser.displayName, user.currentUser.photoURL]
   );
-  const clickSendMessage = useCallback(async () => {
-    if (!message) return;
-    setLoading(true);
-    try {
-      await set(push(ref(getDatabase(), 'messages/' + channel.currentChannel.id)), createMessage());
-      setLoading(false);
-      setMessage('');
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  }, [message, channel.currentChannel?.id, createMessage]);
+  const clickSendMessage = useCallback(
+    async (event) => {
+      if (!message) return;
+      setLoading(true);
+      try {
+        await set(push(ref(getDatabase(), 'messages/' + channel.currentChannel.id)), createMessage());
+        setLoading(false);
+        setMessage('');
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    },
+    [message, channel.currentChannel?.id, createMessage]
+  );
 
   const handleSelectEmoji = useCallback((e) => {
     const sym = e.unified.split('-');
@@ -93,6 +101,7 @@ function ChatInput() {
           label='메세지 입력'
           fullWidth
           value={message}
+          onKeyPress={handleOnKeyPress}
           onChange={handleChange}
         />
         {uploading ? (
@@ -100,12 +109,12 @@ function ChatInput() {
             <LinearProgress variant='determinate' value={percent} />
           </Grid>
         ) : null}
-        <ImageModal
+        {/* <ImageModal
           open={ImageModalOpen}
           handleClose={handleClickClose}
           setPercent={setPercent}
           setUploading={setUploading}
-        />
+        /> */}
       </Grid>
     </Grid>
   );
