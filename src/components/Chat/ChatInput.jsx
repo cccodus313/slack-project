@@ -8,7 +8,7 @@ import { getDatabase, push, ref, serverTimestamp, set } from 'firebase/database'
 import { useSelector } from 'react-redux';
 import { Picker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
-// import ImageModal from '../Modal/ImageModal';
+import ImageModal from '../Modal/ImageModal';
 function ChatInput() {
   const { channel, user } = useSelector((state) => state);
   const [message, setMessage] = useState('');
@@ -109,12 +109,12 @@ function ChatInput() {
             <LinearProgress variant='determinate' value={percent} />
           </Grid>
         ) : null}
-        {/* <ImageModal
+        <ImageModal
           open={ImageModalOpen}
           handleClose={handleClickClose}
           setPercent={setPercent}
           setUploading={setUploading}
-        /> */}
+        />
       </Grid>
     </Grid>
   );
