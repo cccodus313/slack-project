@@ -28,6 +28,7 @@ function Chat() {
     const unsubscribe = onChildAdded(query(sorted, startAt(Date.now())), (snapshot) =>
       setMessages((oldMessages) => [...oldMessages, snapshot.val()])
     );
+    //현재시점으로 추가된 메세지만 가져오도록.setMessages하면 전체 메세지 렌더링되어 속도가 느림.
     return () => {
       unsubscribe?.();
     };

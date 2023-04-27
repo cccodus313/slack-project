@@ -56,7 +56,7 @@ function ChatInput() {
     },
     [message, channel.currentChannel?.id, createMessage]
   );
-
+  //파싱하는부분! 어려움 ㅠㅠ
   const handleSelectEmoji = useCallback((e) => {
     const sym = e.unified.split('-');
     const codesArray = [];
