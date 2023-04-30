@@ -34,6 +34,7 @@ function Chat() {
     };
   }, [channel.currentChannel]);
 
+  //메세지스크롤
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
